@@ -8,6 +8,8 @@ class MyTestCase(unittest.TestCase):
         # self.assertTrue(f.readlines()=="")
         # self.assertFalse(f.readlines()=="")
 
+    def test_timeDistChecker(self):
+        main.timeDistChecking()
 
 
 if __name__ == '__main__':
