@@ -10,13 +10,47 @@ import bing_maps
 defaultFileName = "output.txt"
 
 
-def getFile():
+def getInputFile():
     """
     Method to read the import file
     :return: importFilePath - the path to the file
     """
     importFilePath = input("Please enter the path to the import file: ")  # get the file path
     return importFilePath  # return importFilePath
+
+
+def getOutputFileName():
+    """
+    Method to get the output file name
+    :return: outputFilePath - the path to save the output file
+    """
+    outputFileName = input("Enter a name for the output file (leave blank for default): ")  # get the file name
+    return outputFileName  # return outputFileName
+
+
+def getOutputFilePath():
+    """
+    Method to get the output file path where the user wants the end results saved
+    :return: outputFilePath - the path to save the output file
+    """
+    outputFilePath = input("Enter a path for the output file: ")  # get the file path
+    return outputFilePath  # return outputFilePath
+
+
+def getUserOutputFilePath(defaultOutputFileName=defaultFileName):
+    """
+    Method to get the users prefered output file path and name. A conjunction of methods to reduce code smells.
+    :param defaultOutputFileName: the preferred name of the output file
+    :return: outputFilePath - the path to the users output file
+    """
+    outputFileName = getOutputFileName()  # get the users output file name
+    #  if the user opted for the default file name
+    if outputFileName == "":
+        outputFileName = defaultOutputFileName  # use the default output file name
+    outputFilePath = getOutputFilePath()  # get the output file path
+    outputFilePath += "\\" + outputFileName  # append the file name to the path
+
+    return outputFilePath  # return the output file path
 
 
 def createOutputFile(fileName=defaultFileName):
@@ -67,12 +101,13 @@ def timeDistChecking():
     Uses a list of points
     :return: None
     """
-    filePath = getFile()  # get input file
+    filePath = getInputFile()  # get input file
 
     latLongList = parseTimeDistanceCheckingFile(filePath)  # parse into array
 
-    outputFileName = "timeDistOutput.txt"  # create an output file name
-    createOutputFile(outputFileName)  # create a new output file
+    outputFilePath = getUserOutputFilePath("timeDistOutput.txt")  # get the users output path
+
+    createOutputFile(outputFilePath)  # create a new output file
 
     message = "Routes Created Successfully!"  # create a success message
 
@@ -87,7 +122,7 @@ def timeDistChecking():
         # write to file - origin lat long -> dest lat long | time distance
         outputLine = str(eachCoord[0][0]) + " " + str(eachCoord[0][1]) + " -> " + str(eachCoord[1][0]) + " " + str(
             eachCoord[1][1]) + " | " + str(travelDuration) + ", " + str(travelDistance)
-        writeToFile(outputLine, outputFileName)  # write line to file
+        writeToFile(outputLine, outputFilePath)  # write line to file
 
     printMessage(message)  # print a success or fail message
     return
@@ -115,11 +150,13 @@ def geocoding():
     Method to get a geocode from a list of addresses.
     :return: None
     """
-    filePath = getFile()  # get input file
+    filePath = getInputFile()  # get input file
     addressList = parseAddressFile(filePath)  # parse into array
 
-    outputFileName = "geocodeOutput.txt"  # create a name for the output file
-    createOutputFile(outputFileName)  # create output file
+    outputFilePath = getUserOutputFilePath("geocodeOutput.txt")  # get the users output path
+
+    createOutputFile(outputFilePath)  # create output file
+
     message = "Geocodes successfully created!"  # create success message
 
     # iterate through addresses and get geocodes
@@ -135,7 +172,7 @@ def geocoding():
         outputLine = eachAddress[0] + ", " + eachAddress[1] + ", " + eachAddress[2] + ", " + eachAddress[3] + ", " + \
                      eachAddress[4] + " -> " + str(latitude) + " " + str(longitude)
 
-        writeToFile(outputLine, outputFileName)
+        writeToFile(outputLine, outputFilePath)
 
     printMessage(message)
 
