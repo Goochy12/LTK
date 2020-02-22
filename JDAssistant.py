@@ -85,7 +85,7 @@ def timeDistChecking():
         travelDuration = routeJSON["resourceSets"][0]["resources"][0]["travelDuration"]  # get the duration
 
         # write to file - origin lat long -> dest lat long | time distance
-        outputLine = str(eachCoord[0][0]) + "/" + str(eachCoord[0][1]) + " -> " + str(eachCoord[1][0]) + "/" + str(
+        outputLine = str(eachCoord[0][0]) + " " + str(eachCoord[0][1]) + " -> " + str(eachCoord[1][0]) + " " + str(
             eachCoord[1][1]) + " | " + str(travelDuration) + ", " + str(travelDistance)
         writeToFile(outputLine, outputFileName)  # write line to file
 
@@ -133,7 +133,7 @@ def geocoding():
 
         #  write to file - 0 country, 1 state, 2 post_code, 3 suburb, 4 local_address -> lat long
         outputLine = eachAddress[0] + ", " + eachAddress[1] + ", " + eachAddress[2] + ", " + eachAddress[3] + ", " + \
-                     eachAddress[4] + " -> " + latitude + " " + longitude
+                     eachAddress[4] + " -> " + str(latitude) + " " + str(longitude)
 
         writeToFile(outputLine, outputFileName)
 
