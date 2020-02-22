@@ -1,4 +1,4 @@
-# JDAssistance
+# JDAssistant
 # v1.0 - Windows
 # script to help with manual JDA tasks
 #   - Checking travel time
