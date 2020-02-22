@@ -1,8 +1,12 @@
 import requests
 
-key = "AhoMw4Yz8HJfzN9iUL1v3i0nA9Nn8SNJudyR_IkxnqcnjYX_sbQn8XZUe2qL9_gO"
+key = "AhoMw4Yz8HJfzN9iUL1v3i0nA9Nn8SNJudyR_IkxnqcnjYX_sbQn8XZUe2qL9_gO"  # bing maps API key
+
+# route URL - http://dev.virtualearth.net/REST/V1/Routes/Driving?o=xml&wp.0=london&wp.1=leeds&avoid=minimizeTolls&key=BingMapsKey
 routeURL_synchronous = "http://dev.virtualearth.net/REST/V1/Routes/Driving?"
-URL_addressToGeocode = "http://dev.virtualearth.net/REST/v1/Locations/US/WA/98052/Redmond/1%20Microsoft%20Way?o=xml&key={BingMapsKey}"
+
+# location details URL - http://dev.virtualearth.net/REST/v1/Locations/US/WA/98052/Redmond/1%20Microsoft%20Way?o=xml&key={BingMapsKey}
+URL_addressToGeocode = "http://dev.virtualearth.net/REST/v1/Locations/"
 
 
 def returnRequestJSON(request):
