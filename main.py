@@ -1,5 +1,5 @@
 # JDAssistance
-# v0.1 - Windows
+# v1.0 - Windows
 # script to help with manual JDA tasks
 #   - Checking travel time
 #   - Matching addresses to lat longs
@@ -126,7 +126,7 @@ def run():
         print("Please select one of the following options:")  # instruction message
         print("\t1. Travel Time Checking.")
         print("\t2. Geocoding (Address -> Lat/Long).")
-        print("\t4. Exit.")
+        print("\t3. Exit.")
 
         selection = int(input("Option: "))  # get user input
 
