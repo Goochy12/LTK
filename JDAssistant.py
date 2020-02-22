@@ -1,5 +1,5 @@
 # JDAssistant
-# v1.0 - Windows
+# v1.5 - Windows
 # script to help with manual JDA tasks
 #   - Checking travel time
 #   - Matching addresses to lat longs
@@ -7,7 +7,7 @@
 import os
 import bing_maps
 
-fileName = "output.txt"
+defaultFileName = "output.txt"
 
 
 def getFile():
@@ -19,24 +19,22 @@ def getFile():
     return importFilePath  # return importFilePath
 
 
-def createOutputFile():
+def createOutputFile(fileName=defaultFileName):
     """
     Method to create an output file
     :return: None
     """
-    global fileName  # get the global output file name
     f = open(fileName, "w")  # create the file
     f.close()  # close the file
     return
 
 
-def writeToFile(line):
+def writeToFile(line, fileName=defaultFileName):
     """
     Method to write lines to a file
     :param line: a line to write to file
     :return: None
     """
-    global fileName  # get the global output file name
     f = open(fileName, "a")  # open the file
     f.write(line)  # append the line to the file
     return
@@ -72,15 +70,16 @@ def timeDistChecking():
     filePath = getFile()  # get input file
 
     latLongList = parseTimeDistanceCheckingFile(filePath)  # parse into array
-    # latLongList = [[[-34.210721, 142.0635644], [-37.8015951, 144.8645087]]]
 
-    createOutputFile()  # create a new output file
+    outputFileName = "timeDistOutput.txt"  # create an output file name
+    createOutputFile(outputFileName)  # create a new output file
+
     message = "Routes Created Successfully!"  # create a success message
 
     # match against maps
     for eachCoord in latLongList:
-        route = bing_maps.makeRouteRequest(eachCoord)  # make the route request
-        routeJSON = bing_maps.returnRequestJSON(route)  # convert response to JSON (python dict)
+        routeRequest = bing_maps.makeRouteRequest(eachCoord)  # make the route request
+        routeJSON = bing_maps.returnRequestJSON(routeRequest)  # convert response to JSON (python dict)
 
         travelDistance = routeJSON["resourceSets"][0]["resources"][0]["travelDistance"]  # get the distance
         travelDuration = routeJSON["resourceSets"][0]["resources"][0]["travelDuration"]  # get the duration
@@ -88,13 +87,58 @@ def timeDistChecking():
         # write to file - origin lat long -> dest lat long | time distance
         outputLine = str(eachCoord[0][0]) + "/" + str(eachCoord[0][1]) + " -> " + str(eachCoord[1][0]) + "/" + str(
             eachCoord[1][1]) + " | " + str(travelDuration) + ", " + str(travelDistance)
-        writeToFile(outputLine)  # write line to file
+        writeToFile(outputLine, outputFileName)  # write line to file
 
-    printMessage(message)
+    printMessage(message)  # print a success or fail message
     return
 
 
+def parseAddressFile(filePath):
+    """
+    Method to parse an input file of addresses
+    :param filePath: the path to the input file
+    :return: addressList - a list of address in the correct format -> 0 country, 1 state, 2 post_code, 3 suburb, 4 local_address
+    """
+    file = open(filePath, "r")  # open the file
+    addressList = []  # create a list of addresses
+
+    # iterate through each line of the file
+    for eachLine in file:
+        line = eachLine.split(",")  # split the file on a comma
+        addressList.append(line)  # append the address to the list
+
+    return addressList  # return the address list
+
+
 def geocoding():
+    """
+    Method to get a geocode from a list of addresses.
+    :return: None
+    """
+    filePath = getFile()  # get input file
+    addressList = parseAddressFile(filePath)  # parse into array
+
+    outputFileName = "geocodeOutput.txt"  # create a name for the output file
+    createOutputFile(outputFileName)  # create output file
+    message = "Geocodes successfully created!"  # create success message
+
+    # iterate through addresses and get geocodes
+    for eachAddress in addressList:
+        geocodeRequest = bing_maps.makeAddressToGeocodeRequest(eachAddress)  # make route request
+        geocodeJSON = bing_maps.returnRequestJSON(geocodeRequest)  # convert request into JSON (python dict)
+
+        latitude = geocodeJSON["resourceSets"][0]["resources"][0]["geocodePoints"][0]["coordinates"][0]  # get latitude
+        longitude = geocodeJSON["resourceSets"][0]["resources"][0]["geocodePoints"][0]["coordinates"][
+            1]  # get longitude
+
+        #  write to file - 0 country, 1 state, 2 post_code, 3 suburb, 4 local_address -> lat long
+        outputLine = eachAddress[0] + ", " + eachAddress[1] + ", " + eachAddress[2] + ", " + eachAddress[3] + ", " + \
+                     eachAddress[4] + " -> " + latitude + " " + longitude
+
+        writeToFile(outputLine, outputFileName)
+
+    printMessage(message)
+
     return
 
 
