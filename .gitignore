@@ -1,8 +1,7 @@
 # Default ignored files
 /workspace.xml
 .idea
-output.txt
-input.txt
+*.txt
 __pycache__
 build
 dist
