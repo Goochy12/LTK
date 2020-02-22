@@ -3,6 +3,9 @@ Welcome to JDAssistant v1.5!
 Features:
 	1. TimeDistCalc -> Find the distance and travel time between two points.
 	2. Geocoder -> Find the latitude and logitude of an address.
+	3. Select input file.
+	4. Name output file (or leave blank for default naming convention)
+	5. Select output path.
 	
 HOW TO USE:
 1. Select a feature (1 or 2).
