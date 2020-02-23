@@ -9,4 +9,4 @@ build
 
 # keep these files
 !readme.*
-!test\*
+!test\*.txt
