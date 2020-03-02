@@ -6,8 +6,11 @@
 
 import os
 import bing_maps
+import json_handler
 import variables
-from file_handler import getInputFile, getUserOutputFilePath, createOutputFile, writeToFile
+import file_handler
+
+fileHandler = None
 
 
 def parseTimeDistanceCheckingFile(filePath):
@@ -31,26 +34,91 @@ def parseTimeDistanceCheckingFile(filePath):
     return latLongList  # return the list of lats and longs
 
 
+def getInputFile():
+    """
+    Method to read the import file
+    :return: None
+    """
+    # TODO: add error checking for input
+    global fileHandler  # get the global fileHandler
+    importFilePath = input("Please enter the path to the import file: ")  # get the file path
+    fileHandler.setImportFilePath(importFilePath)  # set the importFilePath
+
+
+def getUserOutputFilePath(systemFileName="output.txt"):
+    """
+    Method to get the output path
+    :param systemFileName:
+    :return: None
+    """
+
+    global fileHandler  # get the global fileHandler
+
+    getUserOutputFileName(systemFileName) # get the user output file name
+    getUserOutputFileDirectory() # get the user output file directory
+
+    outputFilePath = fileHandler.getOutputFileDirectory() + "\\" + fileHandler.getOutputFileName()  # create the output file path
+    fileHandler.setOutputFilePath(outputFilePath) # set the output file path
+
+    return
+
+
+def getUserOutputFileDirectory(systemFileName="output.txt"):
+    """
+    Method to get the output file path where the user wants the end results saved
+    :return: None
+    """
+    global fileHandler  # get the global fileHandler
+
+    # TODO: error checking for input
+    userOutputFileDirectory = input("Enter a directory path for the output file: ")  # get the file directory
+
+    fileHandler.setOutputFileDirectory(userOutputFileDirectory)  # set the output file directory
+
+    return
+
+
+def getUserOutputFileName(systemFileName="output.txt"):
+    """
+    Method to get the output file name
+    :param systemFileName: file name chosen by the method that called it
+    :return: None
+    """
+    global fileHandler  # get the global fileHandler
+
+    # TODO: add error checking for input
+    userOutputFileName = input("Enter a name for the output file (leave blank for default): ")  # get the file name
+
+    fileHandler.setOutputFileName(userOutputFileName)  # set the output file name
+
+    if userOutputFileName == "":
+        fileHandler.setOutputFileName(systemFileName)  # if the user chooses the default name
+
+    return
+
+
 def timeDistChecking():
     """
     Method to get time and distance from an Origin point to a Destination point.
     Uses a list of points
     :return: None
     """
-    filePath = getInputFile()  # get input file
+    global fileHandler  # get the global fileHandler
 
-    latLongList = parseTimeDistanceCheckingFile(filePath)  # parse into array
+    getInputFile()  # get input file
 
-    outputFilePath = getUserOutputFilePath("timeDistOutput.txt")  # get the users output path
+    latLongList = parseTimeDistanceCheckingFile(fileHandler.getImportFilePath())  # parse into array
 
-    createOutputFile(outputFilePath)  # create a new output file
+    getUserOutputFilePath("timeDistOutput.txt")  # get the users output path
+
+    fileHandler.createOutputFile()  # create a new output file
 
     message = "Routes Created Successfully!"  # create a success message
 
     # match against maps
     for eachCoord in latLongList:
         routeRequest = bing_maps.makeRouteRequest(eachCoord)  # make the route request
-        routeJSON = bing_maps.returnRequestJSON(routeRequest)  # convert response to JSON (python dict)
+        routeJSON = json_handler.returnRequestJSON(routeRequest)  # convert response to JSON (python dict)
 
         travelDistance = routeJSON["resourceSets"][0]["resources"][0]["travelDistance"]  # get the distance
         travelDuration = routeJSON["resourceSets"][0]["resources"][0]["travelDuration"]  # get the duration
@@ -58,7 +126,7 @@ def timeDistChecking():
         # write to file - origin lat long -> dest lat long | time distance
         outputLine = str(eachCoord[0][0]) + " " + str(eachCoord[0][1]) + " -> " + str(eachCoord[1][0]) + " " + str(
             eachCoord[1][1]) + " | " + str(travelDuration) + ", " + str(travelDistance)
-        writeToFile(outputLine, outputFilePath)  # write line to file
+        fileHandler.writeToFile(outputLine)  # write line to file
 
     printMessage(message)  # print a success or fail message
     return
@@ -86,19 +154,22 @@ def geocoding():
     Method to get a geocode from a list of addresses.
     :return: None
     """
-    filePath = getInputFile()  # get input file
-    addressList = parseAddressFile(filePath)  # parse into array
 
-    outputFilePath = getUserOutputFilePath("geocodeOutput.txt")  # get the users output path
+    global fileHandler  # get the global fileHandler
 
-    createOutputFile(outputFilePath)  # create output file
+    getInputFile()  # get input file
+    addressList = parseAddressFile(fileHandler.getImportFilePath())  # parse into array
+
+    getUserOutputFilePath("geocodeOutput.txt")  # get the users output path
+
+    fileHandler.createOutputFile()  # create output file
 
     message = "Geocodes successfully created!"  # create success message
 
     # iterate through addresses and get geocodes
     for eachAddress in addressList:
         geocodeRequest = bing_maps.makeAddressToGeocodeRequest(eachAddress)  # make route request
-        geocodeJSON = bing_maps.returnRequestJSON(geocodeRequest)  # convert request into JSON (python dict)
+        geocodeJSON = json_handler.returnRequestJSON(geocodeRequest)  # convert request into JSON (python dict)
 
         latitude = geocodeJSON["resourceSets"][0]["resources"][0]["geocodePoints"][0]["coordinates"][0]  # get latitude
         longitude = geocodeJSON["resourceSets"][0]["resources"][0]["geocodePoints"][0]["coordinates"][
@@ -108,7 +179,7 @@ def geocoding():
         outputLine = eachAddress[0] + ", " + eachAddress[1] + ", " + eachAddress[2] + ", " + eachAddress[3] + ", " + \
                      eachAddress[4] + " -> " + str(latitude) + " " + str(longitude)
 
-        writeToFile(outputLine, outputFilePath)
+        fileHandler.writeToFile(outputLine)
 
     printMessage(message)
 
@@ -137,6 +208,9 @@ def run():
 
     print("Welcome to " + variables.applicationName + "!")  # print welcome message
     selection = ""  # initialise user selection
+
+    global fileHandler  # get the global fileHandler
+    fileHandler = file_handler.FileHandler()  # initalise the global fileHandler
 
     while selection != exitCode:
         # iterate while user does not quit
