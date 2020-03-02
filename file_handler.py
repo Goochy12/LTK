@@ -1,5 +1,8 @@
 # for file handling
 
+import os
+
+
 class FileHandler:
     def __init__(self):
         self.outputFileName = "output.txt"
@@ -48,4 +51,13 @@ class FileHandler:
         """
         f = open(self.outputFilePath, "a")  # open the file
         f.write(line)  # append the line to the file
+        return
+
+    def createDirectory(self, dir):
+        """
+        Method to create a directory
+        :param dir: path of the directory
+        :return: None
+        """
+        os.mkdir(dir)  # create the directory
         return
