@@ -4,11 +4,19 @@
 #   - Checking travel time
 #   - Matching addresses to lat longs
 
+# TODO: Possible errors
+#       File doesn't exist
+#       Directory doesn't exist
+#       Wrong import file
+#       Import file wrong format
+#       Creating a file that already exists
+
 import os
 import bing_maps
 import json_handler
 import variables
 import file_handler
+import error_handler
 
 fileHandler = None
 
@@ -20,17 +28,23 @@ def parseTimeDistanceCheckingFile(filePath):
     :return: latLongList - a list of origin and destination points
     """
     f = open(filePath, "r")  # open the input file
+
     latLongList = []  # initalise the lat and long list
+
     # iterate through the lines in the file
+
     for eachLine in f:
         r = eachLine.split(" ")  # split each line by a space -> origin_lat origin_long dest_lat dest_long
+
         # iterate through each coordinate and convert to a float
         for i in range(len(r)):
             r[i] = float(r[i])  # convert to a float
+
         origin = [r[0], r[1]]  # origin coordinates
         dest = [r[2], r[3]]  # destination coordinates
 
         latLongList.append([origin, dest])  # append the coordinates
+
     return latLongList  # return the list of lats and longs
 
 
@@ -41,7 +55,18 @@ def getInputFile():
     """
     # TODO: add error checking for input
     global fileHandler  # get the global fileHandler
-    importFilePath = input("Please enter the path to the import file: ")  # get the file path
+
+    importFilePath = None  # initalise importFilePath
+
+    while importFilePath == None:
+        # error checking
+        try:
+            importFilePath = input("Please enter the path to the import file: ")  # get the file path
+            error_handler.checkFileExists(importFilePath)  # check if the file exists
+        except:
+            print("The file could not be found!")  # print an error message
+            importFilePath = None  # reset the input
+
     fileHandler.setImportFilePath(importFilePath)  # set the importFilePath
 
 
@@ -70,8 +95,20 @@ def getUserOutputFileDirectory(systemFileName="output.txt"):
     """
     global fileHandler  # get the global fileHandler
 
-    # TODO: error checking for input
-    userOutputFileDirectory = input("Enter a directory path for the output file: ")  # get the file directory
+    userOutputFileDirectory = None  # initalise importFilePath
+
+    while userOutputFileDirectory == None:
+        # error checking
+        try:
+            userOutputFileDirectory = input("Enter a directory path for the output file: ")  # get the file directory
+            error_handler.checkDirectoryExists(userOutputFileDirectory)  # check if the file exists
+        except:
+            createDirectory = input(
+                "The path could not be found! Would you like it to be created for you (y/n)?")  # print an error message / ask to create directory
+            if createDirectory == "y":
+                fileHandler.createDirectory(userOutputFileDirectory)
+            else:
+                userOutputFileDirectory = None  # reset the input
 
     fileHandler.setOutputFileDirectory(userOutputFileDirectory)  # set the output file directory
 
