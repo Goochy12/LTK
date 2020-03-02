@@ -1,4 +1,5 @@
 import requests
+import variables
 
 # route URL - http://dev.virtualearth.net/REST/V1/Routes/Driving?o=xml&wp.0=london&wp.1=leeds&avoid=minimizeTolls&key=BingMapsKey
 routeURL_synchronous = "http://dev.virtualearth.net/REST/V1/Routes/Driving?"
@@ -13,10 +14,10 @@ def makeRouteRequest(latLongs):
     # wp.x indicates a way point
     :return: request - the request in its raw format
     """
-    global bingMapsAPIKey  # global key
+    key = variables.bingMapsAPIKey  # api key
     # construct the URL
     url = routeURL_synchronous + "wp.0=" + str(latLongs[0][0]) + "," + str(latLongs[0][1]) + "&wp.1=" + str(
-        latLongs[1][0]) + "," + str(latLongs[1][1]) + "&key=" + bingMapsAPIKey
+        latLongs[1][0]) + "," + str(latLongs[1][1]) + "&key=" + key
 
     request = requests.get(url)  # make the request
     return request  # return the request
@@ -28,11 +29,11 @@ def makeAddressToGeocodeRequest(address):
     :param address: the address in the request - 0 country, 1 state, 2 post code, 3 suburb, 4 local address (street)
     :return: request - the request in its raw format
     """
-    global bingMapsAPIKey  # global key
+    key = variables.bingMapsAPIKey  # api key
 
     # construct the url
     url = URL_addressToGeocode + str(address[0]) + "/" + str(address[1]) + "/" + str(address[2]) + "/" + str(
-        address[3]) + "/" + str(address[4]) + "?key=" + bingMapsAPIKey
+        address[3]) + "/" + str(address[4]) + "?key=" + key
 
     request = requests.get(url)  # make the request
     return request  # return the request
