@@ -54,11 +54,11 @@ def getUserOutputFilePath(systemFileName="output.txt"):
 
     global fileHandler  # get the global fileHandler
 
-    getUserOutputFileName(systemFileName) # get the user output file name
-    getUserOutputFileDirectory() # get the user output file directory
+    getUserOutputFileName(systemFileName)  # get the user output file name
+    getUserOutputFileDirectory()  # get the user output file directory
 
     outputFilePath = fileHandler.getOutputFileDirectory() + "\\" + fileHandler.getOutputFileName()  # create the output file path
-    fileHandler.setOutputFilePath(outputFilePath) # set the output file path
+    fileHandler.setOutputFilePath(outputFilePath)  # set the output file path
 
     return
 

@@ -7,7 +7,6 @@ class FileHandler:
         self.outputFilePath = ""
         self.outputFileDirectory = ""
 
-
     def getOutputFileName(self):
         return self.outputFileName
 
@@ -31,21 +30,6 @@ class FileHandler:
 
     def setOutputFileDirectory(self, directory):
         self.outputFileDirectory = directory
-
-    def getUserOutputFilePath(self, systemFileName=""):
-        """
-        Method to get the users preferred output file path and name. A conjunction of methods to reduce code smells.
-        :param systemFileName: file name chosen by the method that called it
-        :return: outputFilePath - the path to the users output file
-        """
-        userOutputFileName = self.getOutputFileName(systemFileName)  # get the users output file name
-        #  if the user opted for the default file name
-        if userOutputFileName == "":
-            userOutputFileName = self.outputFileName  # use the default output file name
-        outputFilePath = self.getOutputFilePath()  # get the output file path
-        outputFilePath += "\\" + userOutputFileName  # append the file name to the path
-
-        return outputFilePath  # return the output file path
 
     def createOutputFile(self):
         """
