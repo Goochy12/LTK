@@ -1,6 +1,6 @@
-# JDAssistant
+# LTK (Liam's ToolKit)
 # v1.5 - Windows
-# script to help with manual JDA tasks
+# script to help with manual tasks
 #   - Checking travel time
 #   - Matching addresses to lat longs
 
