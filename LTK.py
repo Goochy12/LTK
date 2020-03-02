@@ -199,7 +199,7 @@ def run():
     os.system("cls")  # wipe the system screen
     exitCode = 3  # code user enters to exit
 
-    print("Welcome to JDAssistance!")  # print welcome message
+    print("Welcome to LTK!")  # print welcome message
     selection = ""  # initialise user selection
 
     while selection != exitCode:

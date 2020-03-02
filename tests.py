@@ -1,5 +1,5 @@
 import unittest
-import JDAssistant
+import LTK
 
 class MyTestCase(unittest.TestCase):
     # def test_fileCreation(self):
@@ -12,7 +12,7 @@ class MyTestCase(unittest.TestCase):
     #     main.timeDistChecking()
 
     def test_geocodeChecker(self):
-        JDAssistant.geocoding()
+        LTK.geocoding()
 
 
 if __name__ == '__main__':
