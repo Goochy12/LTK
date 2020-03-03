@@ -5,7 +5,7 @@
 #   - Matching addresses to lat longs
 
 # TODO: Possible errors
-#       File doesn't exist
+#       File doesn't exist - FileNotFoundError
 #       Directory doesn't exist
 #       Wrong import file
 #       Import file wrong format
@@ -60,10 +60,9 @@ def getInputFile():
 
     while importFilePath == None:
         # input error checking
-        try:
-            importFilePath = input("Please enter the path to the import file: ")  # get the file path
-            error_handler.checkFileExists(importFilePath)  # check if the file exists
-        except:
+        importFilePath = input("Please enter the path to the import file: ")  # get the file path
+        if error_handler.checkFileExists(importFilePath) == False:
+            # check if the file exists
             print("The file could not be found!")  # print an error message
             importFilePath = None  # reset the input
 

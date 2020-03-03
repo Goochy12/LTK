@@ -8,6 +8,6 @@ def checkDirectoryExists(dir):
     return os.path.isdir(dir)
 
 def checkFileExists(dir):
-    if not os.path.isfile(dir):
-        raise Exception("This file does not exist!")
-    return os.path.isfile(dir)
+    if os.path.isfile(dir):
+        return True
+    return False
