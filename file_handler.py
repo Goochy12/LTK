@@ -9,6 +9,7 @@ class FileHandler:
         self.importFilePath = "input.txt"
         self.outputFilePath = ""
         self.outputFileDirectory = ""
+        self.errorOccured = False
 
     def getOutputFileName(self):
         return self.outputFileName
@@ -34,13 +35,24 @@ class FileHandler:
     def setOutputFileDirectory(self, directory):
         self.outputFileDirectory = directory
 
+    def getErrorOccured(self):
+        return self.errorOccured
+
+    def setErrorOccured(self, e):
+        self.errorOccured = e
+
     def createOutputFile(self):
         """
         Method to create an output file
         :return: None
         """
-        f = open(self.outputFilePath, "w")  # create the file
-        f.close()  # close the file
+        try:
+            f = open(self.outputFilePath, "w")  # create the file
+            f.close()  # close the file
+        except OSError:
+            print("\nThere was an error creating the output file.")
+            self.setErrorOccured(True)
+
         return
 
     def writeToFile(self, line):
@@ -49,8 +61,12 @@ class FileHandler:
         :param line: a line to write to file
         :return: None
         """
-        f = open(self.outputFilePath, "a")  # open the file
-        f.write(line)  # append the line to the file
+        try:
+            f = open(self.outputFilePath, "a")  # open the file
+            f.write(line)  # append the line to the file
+        except OSError:
+            print("There was an error writing to the output file.")
+            self.setErrorOccured(True)
         return
 
     def createDirectory(self, dir):
@@ -59,5 +75,10 @@ class FileHandler:
         :param dir: path of the directory
         :return: None
         """
-        os.mkdir(dir)  # create the directory
+        try:
+            os.mkdir(dir)  # create the directory
+
+        except OSError:
+            print("There was an error creating the output directory.")
+            self.setErrorOccured(True)
         return

@@ -3,9 +3,9 @@
 import os
 
 def checkDirectoryExists(dir):
-    if not os.path.isdir(dir):
-        raise Exception("This directory does not exist!")
-    return os.path.isdir(dir)
+    if os.path.isdir(dir):
+        return True
+    return False
 
 def checkFileExists(dir):
     if os.path.isfile(dir):

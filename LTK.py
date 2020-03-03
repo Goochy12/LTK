@@ -7,9 +7,9 @@
 # TODO: Possible errors
 #       File doesn't exist - FileNotFoundError
 #       Directory doesn't exist
-#       Wrong import file
-#       Import file wrong format
-#       Creating a file that already exists
+#       Wrong import file/format - parsing
+#       Creating a file that already exists - inputs and os commands
+#       OS Errors: FileNotFoundError, Invalid Argument
 
 import os
 import bing_maps
@@ -98,10 +98,13 @@ def getUserOutputFileDirectory(systemFileName="output.txt"):
 
     while userOutputFileDirectory == None:
         # input error checking
-        try:
-            userOutputFileDirectory = input("Enter a directory path for the output file: ")  # get the file directory
-            error_handler.checkDirectoryExists(userOutputFileDirectory)  # check if the file exists
-        except:
+        userOutputFileDirectory = input("Enter a directory path for the output file: ")  # get the file directory
+
+        if userOutputFileDirectory == "":
+            userOutputFileDirectory = None
+
+        elif not error_handler.checkDirectoryExists(userOutputFileDirectory):
+            # check if the file exists
             createDirectory = input(
                 "The path could not be found! Would you like it to be created for you (y/n)?")  # print an error message / ask to create directory
             if createDirectory == "y":
@@ -122,24 +125,25 @@ def getUserOutputFileName(systemFileName="output.txt"):
     """
     global fileHandler  # get the global fileHandler
 
-    userOutputFileName = ""  # initalise importFilePath
+    userOutputFileName = None  # initalise importFilePath
 
-    while userOutputFileName == "":
+    while userOutputFileName == None:
         # input error checking
-        try:
-            userOutputFileName = input("Enter a name for the output file (leave blank for default): ")  # get the file name
+        userOutputFileName = input("Enter a name for the output file (leave blank for default): ")  # get the file name
 
-            fileHandler.setOutputFileName(userOutputFileName)  # set the output file name
+        fileHandler.setOutputFileName(userOutputFileName)  # set the output file name
 
-            if userOutputFileName == "":
-                fileHandler.setOutputFileName(systemFileName)  # if the user chooses the default name
+        if userOutputFileName == "":
+            fileHandler.setOutputFileName(systemFileName)  # if the user chooses the default name
 
-            error_handler.checkFileExists(userOutputFileName)  # check if the file exists
-        except:
-            userOutputFileName = input("This file already exists! Would you like to overwrite it (y/n)?")  # print an error message
+        if error_handler.checkFileExists(userOutputFileName):
+            # check if the file exists
 
-            if userOutputFileName == "y":
-                fileHandler.createOutputFile() # if the user wants to overwrite the file
+            overwriteFile = input(
+                "This file already exists! Would you like to overwrite it (y/n)?")  # print an error message
+
+            if overwriteFile == "y":
+                fileHandler.createOutputFile()  # if the user wants to overwrite the file
             else:
                 userOutputFileName = None  # reset the input
 
@@ -162,21 +166,21 @@ def timeDistChecking():
 
     fileHandler.createOutputFile()  # create a new output file
 
-    message = "Routes Created Successfully!"  # create a success message
-
     # match against maps
-    for eachCoord in latLongList:
-        routeRequest = bing_maps.makeRouteRequest(eachCoord)  # make the route request
-        routeJSON = json_handler.returnRequestJSON(routeRequest)  # convert response to JSON (python dict)
+    if fileHandler.getErrorOccured() == False:
+        for eachCoord in latLongList:
+            routeRequest = bing_maps.makeRouteRequest(eachCoord)  # make the route request
+            routeJSON = json_handler.returnRequestJSON(routeRequest)  # convert response to JSON (python dict)
 
-        travelDistance = routeJSON["resourceSets"][0]["resources"][0]["travelDistance"]  # get the distance
-        travelDuration = routeJSON["resourceSets"][0]["resources"][0]["travelDuration"]  # get the duration
+            travelDistance = routeJSON["resourceSets"][0]["resources"][0]["travelDistance"]  # get the distance
+            travelDuration = routeJSON["resourceSets"][0]["resources"][0]["travelDuration"]  # get the duration
 
-        # write to file - origin lat long -> dest lat long | time distance
-        outputLine = str(eachCoord[0][0]) + " " + str(eachCoord[0][1]) + " -> " + str(eachCoord[1][0]) + " " + str(
-            eachCoord[1][1]) + " | " + str(travelDuration) + ", " + str(travelDistance)
-        fileHandler.writeToFile(outputLine)  # write line to file
+            # write to file - origin lat long -> dest lat long | time distance
+            outputLine = str(eachCoord[0][0]) + " " + str(eachCoord[0][1]) + " -> " + str(eachCoord[1][0]) + " " + str(
+                eachCoord[1][1]) + " | " + str(travelDuration) + ", " + str(travelDistance)
+            fileHandler.writeToFile(outputLine)  # write line to file
 
+    message = "Routes Created Successfully!"  # create a success message
     printMessage(message)  # print a success or fail message
     return
 
@@ -213,24 +217,26 @@ def geocoding():
 
     fileHandler.createOutputFile()  # create output file
 
-    message = "Geocodes successfully created!"  # create success message
 
     # iterate through addresses and get geocodes
-    for eachAddress in addressList:
-        geocodeRequest = bing_maps.makeAddressToGeocodeRequest(eachAddress)  # make route request
-        geocodeJSON = json_handler.returnRequestJSON(geocodeRequest)  # convert request into JSON (python dict)
+    if fileHandler.getErrorOccured() == False:
+        for eachAddress in addressList:
+            geocodeRequest = bing_maps.makeAddressToGeocodeRequest(eachAddress)  # make route request
+            geocodeJSON = json_handler.returnRequestJSON(geocodeRequest)  # convert request into JSON (python dict)
 
-        latitude = geocodeJSON["resourceSets"][0]["resources"][0]["geocodePoints"][0]["coordinates"][0]  # get latitude
-        longitude = geocodeJSON["resourceSets"][0]["resources"][0]["geocodePoints"][0]["coordinates"][
-            1]  # get longitude
+            latitude = geocodeJSON["resourceSets"][0]["resources"][0]["geocodePoints"][0]["coordinates"][
+                0]  # get latitude
+            longitude = geocodeJSON["resourceSets"][0]["resources"][0]["geocodePoints"][0]["coordinates"][
+                1]  # get longitude
 
-        #  write to file - 0 country, 1 state, 2 post_code, 3 suburb, 4 local_address -> lat long
-        outputLine = eachAddress[0] + ", " + eachAddress[1] + ", " + eachAddress[2] + ", " + eachAddress[3] + ", " + \
-                     eachAddress[4] + " -> " + str(latitude) + " " + str(longitude)
+            #  write to file - 0 country, 1 state, 2 post_code, 3 suburb, 4 local_address -> lat long
+            outputLine = eachAddress[0] + ", " + eachAddress[1] + ", " + eachAddress[2] + ", " + eachAddress[3] + ", " + \
+                         eachAddress[4] + " -> " + str(latitude) + " " + str(longitude)
 
-        fileHandler.writeToFile(outputLine)
+            fileHandler.writeToFile(outputLine)
 
-    printMessage(message)
+    message = "Geocodes successfully created!"  # create success message
+    printMessage(message)  # print a success or failure message
 
     return
 
@@ -240,8 +246,17 @@ def printMessage(message):
     Method to print a message to the user
     :return:
     """
-    os.system("cls")  # clear the console
+    if fileHandler.getErrorOccured() == True:
+        # check if an error occurred
+        message = "\nAn error occurred, please check the output."  # create a failure message
+
+    else:
+        os.system("cls")  # clear the console
+
     print(message)  # print the message
+
+    fileHandler.setErrorOccured(False)  # set the error occurrence to False
+
     print()
 
     return
