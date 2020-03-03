@@ -5,11 +5,11 @@
 #   - Matching addresses to lat longs
 
 # TODO: Possible errors
-#       File doesn't exist - FileNotFoundError
-#       Directory doesn't exist
+#       DONE: File doesn't exist - FileNotFoundError
+#       DONE: Directory doesn't exist
+#       DONE: Creating a file that already exists - inputs and os commands
+#       DONE:OS Errors: FileNotFoundError, Invalid Argument
 #       Wrong import file/format - parsing
-#       Creating a file that already exists - inputs and os commands
-#       OS Errors: FileNotFoundError, Invalid Argument
 
 import os
 import bing_maps
@@ -32,7 +32,6 @@ def parseTimeDistanceCheckingFile(filePath):
     latLongList = []  # initalise the lat and long list
 
     # iterate through the lines in the file
-
     for eachLine in f:
         r = eachLine.split(" ")  # split each line by a space -> origin_lat origin_long dest_lat dest_long
 
@@ -158,7 +157,12 @@ def timeDistChecking():
     """
     global fileHandler  # get the global fileHandler
 
-    getInputFile()  # get input file
+    # TODO: File checking
+    try:
+        getInputFile()  # get input file
+    except:
+        print("There is an error in the input file.")
+        return
 
     latLongList = parseTimeDistanceCheckingFile(fileHandler.getImportFilePath())  # parse into array
 
