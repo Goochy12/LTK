@@ -1,5 +1,5 @@
 # LTK (Liam's ToolKit)
-# v1.5 - Windows
+# v1.6 - Windows
 # script to help with manual tasks
 #   - Checking travel time
 #   - Matching addresses to lat longs
