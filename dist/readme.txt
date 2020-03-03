@@ -1,4 +1,4 @@
-Welcome to JDAssistant v1.5!
+Welcome to LTK (Liam's TookKit) v1.6!
 
 Features:
 	1. TimeDistCalc -> Find the distance and travel time between two points.
