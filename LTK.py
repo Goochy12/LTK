@@ -59,7 +59,7 @@ def getInputFile():
     importFilePath = None  # initalise importFilePath
 
     while importFilePath == None:
-        # error checking
+        # input error checking
         try:
             importFilePath = input("Please enter the path to the import file: ")  # get the file path
             error_handler.checkFileExists(importFilePath)  # check if the file exists
@@ -98,7 +98,7 @@ def getUserOutputFileDirectory(systemFileName="output.txt"):
     userOutputFileDirectory = None  # initalise importFilePath
 
     while userOutputFileDirectory == None:
-        # error checking
+        # input error checking
         try:
             userOutputFileDirectory = input("Enter a directory path for the output file: ")  # get the file directory
             error_handler.checkDirectoryExists(userOutputFileDirectory)  # check if the file exists
@@ -123,13 +123,26 @@ def getUserOutputFileName(systemFileName="output.txt"):
     """
     global fileHandler  # get the global fileHandler
 
-    # TODO: add error checking for input
-    userOutputFileName = input("Enter a name for the output file (leave blank for default): ")  # get the file name
+    userOutputFileName = ""  # initalise importFilePath
 
-    fileHandler.setOutputFileName(userOutputFileName)  # set the output file name
+    while userOutputFileName == "":
+        # input error checking
+        try:
+            userOutputFileName = input("Enter a name for the output file (leave blank for default): ")  # get the file name
 
-    if userOutputFileName == "":
-        fileHandler.setOutputFileName(systemFileName)  # if the user chooses the default name
+            fileHandler.setOutputFileName(userOutputFileName)  # set the output file name
+
+            if userOutputFileName == "":
+                fileHandler.setOutputFileName(systemFileName)  # if the user chooses the default name
+
+            error_handler.checkFileExists(userOutputFileName)  # check if the file exists
+        except:
+            userOutputFileName = input("This file already exists! Would you like to overwrite it (y/n)?")  # print an error message
+
+            if userOutputFileName == "y":
+                fileHandler.createOutputFile() # if the user wants to overwrite the file
+            else:
+                userOutputFileName = None  # reset the input
 
     return
 
