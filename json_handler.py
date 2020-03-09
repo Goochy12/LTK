@@ -7,4 +7,7 @@ def returnRequestJSON(request):
     :param request: the HTTP request (GET)
     :return: JSON (python dict)
     """
-    return request.json()  # return the json
+    try:
+        return request.json()  # return the json
+    except json.decoder.JSONDecodeError:
+        print(request.json())

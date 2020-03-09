@@ -20,6 +20,7 @@ def makeRouteRequest(latLongs):
         latLongs[1][0]) + "," + str(latLongs[1][1]) + "&key=" + key
 
     request = requests.get(url)  # make the request
+    print(request)
     return request  # return the request
 
 
@@ -36,4 +37,5 @@ def makeAddressToGeocodeRequest(address):
         address[3]) + "/" + str(address[4]) + "?key=" + key
 
     request = requests.get(url)  # make the request
+    print(request)
     return request  # return the request
