@@ -13,7 +13,6 @@
 
 import os
 import bing_maps
-import json_handler
 import variables
 import file_handler
 import error_handler
@@ -174,7 +173,7 @@ def timeDistChecking():
     if fileHandler.getErrorOccured() == False:
         for eachCoord in latLongList:
             routeRequest = bing_maps.makeRouteRequest(eachCoord)  # make the route request
-            routeJSON = json_handler.returnRequestJSON(routeRequest)  # convert response to JSON (python dict)
+            routeJSON = bing_maps.returnRequestJSON(routeRequest)  # convert response to JSON (python dict)
 
             travelDistance = routeJSON["resourceSets"][0]["resources"][0]["travelDistance"]  # get the distance
             travelDuration = routeJSON["resourceSets"][0]["resources"][0]["travelDuration"]  # get the duration
@@ -226,7 +225,7 @@ def geocoding():
     if fileHandler.getErrorOccured() == False:
         for eachAddress in addressList:
             geocodeRequest = bing_maps.makeAddressToGeocodeRequest(eachAddress)  # make route request
-            geocodeJSON = json_handler.returnRequestJSON(geocodeRequest)  # convert request into JSON (python dict)
+            geocodeJSON = bing_maps.returnRequestJSON(geocodeRequest)  # convert request into JSON (python dict)
 
             latitude = geocodeJSON["resourceSets"][0]["resources"][0]["geocodePoints"][0]["coordinates"][
                 0]  # get latitude
