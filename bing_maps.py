@@ -13,6 +13,7 @@ def returnRequestJSON(request):
     :param request: the HTTP request (GET)
     :return: JSON (python dict)
     """
+    print(request)
     return request.json()  # return the json
 
 
