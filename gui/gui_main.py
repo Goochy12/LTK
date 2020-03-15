@@ -1,16 +1,14 @@
 from tkinter import *
 from tkinter.ttk import *
-from tkinter import filedialog
 import variables
-import input_output_gui
+from gui import input_output_gui
 
 
 class App:
     """
     Class to hold the frame of the application
     """
-
-    def __init__(self, master):
+    def __init__(self, master, featureList):
         frame = Frame(master)  # create a frame
         self.setWindowName(master, variables.applicationName)  # set the window name
 
@@ -65,9 +63,7 @@ class App:
         # self.addFeatureWindow(fw)
         # dictionary?
 
-        # self.addFeatureWindowLayout(fw)
-
-        input_output_gui.InputOutputGui([fw,feature])
+        input_output_gui.InputOutputGui([fw,feature])   # create a standard input/output gui layout
 
         return
 
