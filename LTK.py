@@ -17,6 +17,7 @@ import json_handler
 import variables
 import file_handler
 import error_handler
+import requests
 
 fileHandler = None
 
