@@ -14,14 +14,9 @@
 import os
 import big_maps_requests
 import requests_handler
-import variables
-import file_handler
 import error_handler
-import requests
-import sys
-sys.path.append('gui/')
-import gui_main
 from tkinter import *
+from gui import gui_main
 
 fileHandler = None
 
@@ -270,49 +265,24 @@ def printMessage(message):
 
     return
 
-
-def runInputLoop():
-    """
-    Method to run an input loop for the main window
-    :return: None
-    """
-    validInput = False  # set a variable for valid input
-
-    while not validInput:
-        try:
-            selection = int(input("Option: "))  # get user input
-            validInput = True
-        except:
-            # while the selection is invalid
-            print("\nPlease make sure you enter a valid number.")
-
-    if selection == 1:
-        timeDistChecking()  # Time Checking
-    elif selection == 2:
-        geocoding()  # Geocoding (Address -> Lat/Long)
-    elif selection == 3:
-        quit()
-    else:
-        # while the selection is invalid
-        print("\nPlease make a valid selection.")
-
 def run():
     """
     Main running method
     :return: None
     """
-    root = Tk()
+    root = Tk() # create the root of the gui
+
+    featureList = {"travel_time_checker": 0}
+
+    app = gui_main.App(root, featureList)   # create the app
+    root.mainloop() # mainloop
+    root.destroy()  # destroy
 
     # m = Menu(root)
     # root.configure(menu=m)
     #
     # filemenu = Menu(m)
     # m.add_cascade(label="File", menu=filemenu)
-
-    app = gui_main.App(root)
-    root.mainloop()
-    root.destroy()
-
     return
 
 
