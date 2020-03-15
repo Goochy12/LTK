@@ -1,6 +1,8 @@
 from tkinter import *
 from tkinter.ttk import *
+from tkinter import filedialog
 import variables
+import input_output_gui
 
 
 class App:
@@ -27,9 +29,9 @@ class App:
 
         # iterate through the list of features to create a button for
         for i in range(len(variables.featureNames)):
-            feature = [i, variables.featureNames[i]]
+            feature = variables.featureNames[i]
             button = Button(frame, text=variables.featureNames[i],
-                            command=lambda j=feature: self.createWindow(j))  # create the button
+                            command=lambda j=feature: self.createWindow(master, j))  # create the button
             button.pack(side=TOP)  # pack the button
             # button.place(anchor=CENTER)
             buttonWindowList.append(button)  # add the button to the list
@@ -42,14 +44,14 @@ class App:
     def addFeatureWindow(self, window):
         self.featureWindows[window.title()] = window
 
-    def createWindow(self, feature):
+    def createWindow(self, master, feature):
         """
         Method to create a new window for a feature
         :param feature: the feature the window is being created for
         :return: None
         """
         fw = Toplevel()  # create the new window
-        fw.title(feature[1])  # set the title
+        fw.title(feature)  # set the title
 
         windowSize = [400, 400] # window size
         self.setWindowSize(fw, windowSize[0], windowSize[1]) # set the window size
@@ -58,8 +60,14 @@ class App:
         self.setWindowLocation(fw, windowSize, screenGeom)   # set the window location
 
         fw.focus_set()  # set the focus to the new window
+        fw.transient(master)    # make the window transient
 
-        self.addFeatureWindow(fw)
+        # self.addFeatureWindow(fw)
+        # dictionary?
+
+        # self.addFeatureWindowLayout(fw)
+
+        input_output_gui.InputOutputGui([fw,feature])
 
         return
 
@@ -130,18 +138,3 @@ class App:
         root.geometry("%dx%d+%d+%d" % (w, h, x, y))  # set the location of the window
         return
 
-
-root = Tk()
-
-# m = Menu(root)
-# root.configure(menu=m)
-#
-# filemenu = Menu(m)
-# m.add_cascade(label="File", menu=filemenu)
-
-
-app = App(root)
-
-# top = Toplevel()
-root.mainloop()
-root.destroy()
