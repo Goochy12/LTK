@@ -41,12 +41,16 @@ class FileHandler:
     def setErrorOccured(self, e):
         self.errorOccured = e
 
+    def createOutputFilePath(self):
+        self.setOutputFilePath(self.outputFileDirectory+"\\"+self.outputFileName+".txt")
+
     def createOutputFile(self):
         """
         Method to create an output file
         :return: None
         """
         try:
+            self.createOutputFilePath()
             f = open(self.outputFilePath, "w")  # create the file
             f.close()  # close the file
         except OSError:
