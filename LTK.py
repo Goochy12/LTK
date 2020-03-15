@@ -266,6 +266,27 @@ def printMessage(message):
     return
 
 
+def runInputLoop():
+    validInput = False  # set a variable for valid input
+
+    while not validInput:
+        try:
+            selection = int(input("Option: "))  # get user input
+            validInput = True
+        except:
+            # while the selection is invalid
+            print("\nPlease make sure you enter a valid number.")
+
+    if selection == 1:
+        timeDistChecking()  # Time Checking
+    elif selection == 2:
+        geocoding()  # Geocoding (Address -> Lat/Long)
+    elif selection == 3:
+        quit()
+    else:
+        # while the selection is invalid
+        print("\nPlease make a valid selection.")
+
 def run():
     """
     Main running method
@@ -280,27 +301,16 @@ def run():
     global fileHandler  # get the global fileHandler
     fileHandler = file_handler.FileHandler()  # initalise the global fileHandler
 
-    while selection != exitCode:
+    while True:
         # iterate while user does not quit
         print("Please select one of the following options:")  # instruction message
         print("\t1. Travel Time Checking.")
         print("\t2. Geocoding (Address -> Lat/Long).")
         print("\t3. Exit.")
 
-        selection = int(input("Option: "))  # get user input
+        runInputLoop()
 
-        while selection < 1 or selection > exitCode:
-            # while the selection is invalid
-            print()
-            print("Please make a valid selection.")
-            selection = int(input())
-
-        if selection == 1:
-            timeDistChecking()  # Time Checking
-        elif selection == 2:
-            geocoding()  # Geocoding (Address -> Lat/Long)
-        else:
-            quit()
+    return
 
 
 if __name__ == '__main__':
