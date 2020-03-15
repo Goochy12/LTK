@@ -9,31 +9,59 @@ class App:
     """
 
     def __init__(self, master):
-        frame = Frame(master)   # create a frame
-        self.setWindowName(master, variables.applicationName)   # set the window name
+        frame = Frame(master)  # create a frame
+        self.setWindowName(master, variables.applicationName)  # set the window name
 
-        appGeom = [500,500]   # width x height
+        appGeom = [500, 500]  # width x height
         self.setWindowSize(master, appGeom[0], appGeom[1])  # set the size of the window
         self.setWindowResizable(master, False)  # set the window to FALSE resizeable (by the user)
 
-        screenSize = self.getScreensize(master)   # get the size of the users screen
+        screenSize = self.getScreensize(master)  # get the size of the users screen
         centerGeom = self.getScreenCenterLocation(appGeom, screenSize)
         self.setWindowLocation(master, appGeom, centerGeom)  # set the location of the window, on the users screen
 
-        frame.pack()    # pack the frame
+        frame.pack()  # pack the frame
 
         # gui layout
         buttonWindowList = []  # create a list for main window buttons
 
-        for eachFeature in variables.featureNames:
-            # iterate through the list of features to create a button for
-            button = Button(frame, text=eachFeature, command=self.openWindow)  # create the button
+        # iterate through the list of features to create a button for
+        for i in range(len(variables.featureNames)):
+            feature = [i, variables.featureNames[i]]
+            button = Button(frame, text=variables.featureNames[i],
+                            command=lambda j=feature: self.createWindow(j))  # create the button
             button.pack(side=TOP)  # pack the button
+            # button.place(anchor=CENTER)
             buttonWindowList.append(button)  # add the button to the list
 
-    def openWindow(self, feature):
-        f = Toplevel()
-        f.title(feature)
+        self.featureWindows = {}
+
+    def getFeatureWindows(self):
+        return self.featureWindows
+
+    def addFeatureWindow(self, window):
+        self.featureWindows[window.title()] = window
+
+    def createWindow(self, feature):
+        """
+        Method to create a new window for a feature
+        :param feature: the feature the window is being created for
+        :return: None
+        """
+        fw = Toplevel()  # create the new window
+        fw.title(feature[1])  # set the title
+
+        windowSize = [400, 400] # window size
+        self.setWindowSize(fw, windowSize[0], windowSize[1]) # set the window size
+        screenSize = self.getScreensize(fw)  # get the screen size
+        screenGeom = self.getScreenCenterLocation(windowSize, screenSize)   # get the center of the screen
+        self.setWindowLocation(fw, windowSize, screenGeom)   # set the window location
+
+        fw.focus_set()  # set the focus to the new window
+
+        self.addFeatureWindow(fw)
+
+        return
 
     def setWindowName(self, root, windowName):
         """
@@ -53,7 +81,7 @@ class App:
         :param height: height to set
         :return: None
         """
-        root.geometry(str(width)+"x"+str(height))  # set the width x height
+        root.geometry(str(width) + "x" + str(height))  # set the width x height
         return
 
     def setWindowResizable(self, root, resizable):
@@ -63,7 +91,7 @@ class App:
         :param resizable: True or False
         :return: None
         """
-        root.resizable(resizable, resizable)    # set resizable
+        root.resizable(resizable, resizable)  # set resizable
         return
 
     def getScreensize(self, root):
@@ -73,19 +101,19 @@ class App:
         :return: list of screen width and height
         """
         screenWidth = root.winfo_screenwidth()  # get the screens width
-        screenHeight = root.winfo_screenheight()    # get the screens height
-        return [screenWidth,screenHeight]   # return width and height
+        screenHeight = root.winfo_screenheight()  # get the screens height
+        return [screenWidth, screenHeight]  # return width and height
 
     def getScreenCenterLocation(self, appWindowSize, screenSize):
         """
         Method to get the center location of the users screen
         :return: list of x and y coordinates relational to the center of the users screen
         """
-        w = appWindowSize[0]    # application window width
-        h = appWindowSize[1]    # application window height
-        x = (screenSize[0] / 2) - (w / 2)   # center x coordinate
-        y = (screenSize[1] / 2) - (h / 2)   # center y coordinate
-        return [x,y]    # return x and y coordinates
+        w = appWindowSize[0]  # application window width
+        h = appWindowSize[1]  # application window height
+        x = (screenSize[0] / 2) - (w / 2)  # center x coordinate
+        y = (screenSize[1] / 2) - (h / 2)  # center y coordinate
+        return [x, y]  # return x and y coordinates
 
     def setWindowLocation(self, root, appWindowSize, screenGeom):
         """
@@ -97,12 +125,10 @@ class App:
         """
         w = appWindowSize[0]  # application window width
         h = appWindowSize[1]  # application window height
-        x = screenGeom[0]   # center x coordinate
-        y = screenGeom[1]   # center y coordinate
-        root.geometry("%dx%d+%d+%d" % (w,h,x,y))    # set the location of the window
+        x = screenGeom[0]  # center x coordinate
+        y = screenGeom[1]  # center y coordinate
+        root.geometry("%dx%d+%d+%d" % (w, h, x, y))  # set the location of the window
         return
-
-
 
 
 root = Tk()
