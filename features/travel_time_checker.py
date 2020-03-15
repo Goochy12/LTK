@@ -2,6 +2,10 @@ import big_maps_requests
 import requests_handler
 import file_handler
 
+# TODO:
+#   Add comments
+#   tidy up method
+
 class TravelTimeChecker:
     def __init__(self):
         self.fileHandler = file_handler.FileHandler()

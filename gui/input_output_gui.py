@@ -2,6 +2,10 @@ from tkinter import *
 from tkinter import filedialog
 from features import travel_time_checker
 
+# TODO:
+#   Add comments
+#   tidy up method
+
 class InputOutputGui:
     def __init__(self, feature):
         self.master = feature[0]
@@ -59,14 +63,19 @@ class InputOutputGui:
         return outputLocation
 
     def calculate(self, feature):
+        message = None
         if feature == "Travel Time Checking":
             c = travel_time_checker.TravelTimeChecker()
             message = c.timeDistChecking(self.inputFile, self.outputFileName, self.outputFilelocation)
 
-            if message[0] == "OK":
-                # msg okay
-                return
-            else:
-                # something went wrong
-                return
+        elif feature == "Geocoding":
+            return
+
+
+        if message[0] == "OK":
+            # msg okay
+            return
+        else:
+            # something went wrong
+            return
         return
