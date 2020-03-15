@@ -42,7 +42,11 @@ class FileHandler:
         self.errorOccured = e
 
     def createOutputFilePath(self):
-        self.setOutputFilePath(self.outputFileDirectory+"\\"+self.outputFileName+".txt")
+        """
+        Method to create a path for the output file
+        :return: None
+        """
+        self.setOutputFilePath(self.outputFileDirectory+"\\"+self.outputFileName+".txt")    # set the path
 
     def createOutputFile(self):
         """
