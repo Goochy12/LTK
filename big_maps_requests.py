@@ -9,14 +9,6 @@ routeURL_synchronous = "http://dev.virtualearth.net/REST/V1/Routes/Driving?"
 # location details URL - http://dev.virtualearth.net/REST/v1/Locations/US/WA/98052/Redmond/1%20Microsoft%20Way?o=xml&key={BingMapsKey}
 URL_addressToGeocode = "http://dev.virtualearth.net/REST/v1/Locations/"
 
-def returnRequestJSON(request):
-    """
-    Method to return the JSON (python dict) of a request
-    :param request: the HTTP request (GET)
-    :return: JSON (python dict)
-    """
-    return request.json()  # return the json
-
 
 def makeRouteRequest(latLongs):
     """
