@@ -12,11 +12,12 @@
 #       Wrong import file/format - parsing
 
 import os
-import bing_maps
-import json_handler
+import big_maps_requests
+import requests_handler
 import variables
 import file_handler
 import error_handler
+import requests
 
 fileHandler = None
 
@@ -173,8 +174,8 @@ def timeDistChecking():
     # match against maps
     if fileHandler.getErrorOccured() == False:
         for eachCoord in latLongList:
-            routeRequest = bing_maps.makeRouteRequest(eachCoord)  # make the route request
-            routeJSON = json_handler.returnRequestJSON(routeRequest)  # convert response to JSON (python dict)
+            routeRequest = big_maps_requests.makeRouteRequest(eachCoord)  # make the route request
+            routeJSON = requests_handler.returnRequestJSON(routeRequest)  # convert response to JSON (python dict)
 
             travelDistance = routeJSON["resourceSets"][0]["resources"][0]["travelDistance"]  # get the distance
             travelDuration = routeJSON["resourceSets"][0]["resources"][0]["travelDuration"]  # get the duration
@@ -225,8 +226,8 @@ def geocoding():
     # iterate through addresses and get geocodes
     if fileHandler.getErrorOccured() == False:
         for eachAddress in addressList:
-            geocodeRequest = bing_maps.makeAddressToGeocodeRequest(eachAddress)  # make route request
-            geocodeJSON = json_handler.returnRequestJSON(geocodeRequest)  # convert request into JSON (python dict)
+            geocodeRequest = big_maps_requests.makeAddressToGeocodeRequest(eachAddress)  # make route request
+            geocodeJSON = requests_handler.returnRequestJSON(geocodeRequest)  # convert request into JSON (python dict)
 
             latitude = geocodeJSON["resourceSets"][0]["resources"][0]["geocodePoints"][0]["coordinates"][
                 0]  # get latitude
@@ -266,6 +267,31 @@ def printMessage(message):
     return
 
 
+def runInputLoop():
+    """
+    Method to run an input loop for the main window
+    :return: None
+    """
+    validInput = False  # set a variable for valid input
+
+    while not validInput:
+        try:
+            selection = int(input("Option: "))  # get user input
+            validInput = True
+        except:
+            # while the selection is invalid
+            print("\nPlease make sure you enter a valid number.")
+
+    if selection == 1:
+        timeDistChecking()  # Time Checking
+    elif selection == 2:
+        geocoding()  # Geocoding (Address -> Lat/Long)
+    elif selection == 3:
+        quit()
+    else:
+        # while the selection is invalid
+        print("\nPlease make a valid selection.")
+
 def run():
     """
     Main running method
@@ -280,27 +306,16 @@ def run():
     global fileHandler  # get the global fileHandler
     fileHandler = file_handler.FileHandler()  # initalise the global fileHandler
 
-    while selection != exitCode:
+    while True:
         # iterate while user does not quit
         print("Please select one of the following options:")  # instruction message
         print("\t1. Travel Time Checking.")
         print("\t2. Geocoding (Address -> Lat/Long).")
         print("\t3. Exit.")
 
-        selection = int(input("Option: "))  # get user input
+        runInputLoop()
 
-        while selection < 1 or selection > exitCode:
-            # while the selection is invalid
-            print()
-            print("Please make a valid selection.")
-            selection = int(input())
-
-        if selection == 1:
-            timeDistChecking()  # Time Checking
-        elif selection == 2:
-            geocoding()  # Geocoding (Address -> Lat/Long)
-        else:
-            quit()
+    return
 
 
 if __name__ == '__main__':
