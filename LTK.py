@@ -18,6 +18,10 @@ import variables
 import file_handler
 import error_handler
 import requests
+import sys
+sys.path.append('gui/')
+import gui_main
+from tkinter import *
 
 fileHandler = None
 
@@ -297,23 +301,17 @@ def run():
     Main running method
     :return: None
     """
-    os.system("cls")  # wipe the system screen
-    exitCode = 3  # code user enters to exit
+    root = Tk()
 
-    print("Welcome to " + variables.applicationName + "!")  # print welcome message
-    selection = ""  # initialise user selection
+    # m = Menu(root)
+    # root.configure(menu=m)
+    #
+    # filemenu = Menu(m)
+    # m.add_cascade(label="File", menu=filemenu)
 
-    global fileHandler  # get the global fileHandler
-    fileHandler = file_handler.FileHandler()  # initalise the global fileHandler
-
-    while True:
-        # iterate while user does not quit
-        print("Please select one of the following options:")  # instruction message
-        print("\t1. Travel Time Checking.")
-        print("\t2. Geocoding (Address -> Lat/Long).")
-        print("\t3. Exit.")
-
-        runInputLoop()
+    app = gui_main.App(root)
+    root.mainloop()
+    root.destroy()
 
     return
 
