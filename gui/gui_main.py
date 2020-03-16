@@ -69,8 +69,15 @@ class App:
         return
 
     def loadGuiContent(self,master,feature):
+        """
+        Method to populate the popup gui
+        :param master: master window
+        :param feature: information about the feature to load
+        :return: None
+        """
+        # run checker
         if feature[0] == 0:
-            travel_time_checker_gui.TravelTimeCheckerGui(master, feature)   # create a standard input/output gui layout
+            travel_time_checker_gui.TravelTimeCheckerGui(master, feature)   # create a travel time checker gui layout
 
 
     def setWindowName(self, root, windowName):
