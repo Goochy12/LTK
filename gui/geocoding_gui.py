@@ -6,7 +6,7 @@ from features import geocoding
 # TODO:
 #   tidy up method
 
-class TravelTimeCheckerGui:
+class GeocodingGui:
     """
     Class to create a travel time checker and handle I/O and events
     """

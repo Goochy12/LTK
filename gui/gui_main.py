@@ -1,7 +1,7 @@
 from tkinter import *
 from tkinter.ttk import *
 import variables
-from gui import travel_time_checker_gui
+from gui import travel_time_checker_gui, geocoding_gui
 
 
 class App:
@@ -78,6 +78,8 @@ class App:
         # run checker
         if feature[0] == 0:
             travel_time_checker_gui.TravelTimeCheckerGui(master, feature)   # create a travel time checker gui layout
+        elif feature[0] == 1:
+            geocoding_gui.GeocodingGui(master, feature)
 
 
     def setWindowName(self, root, windowName):
