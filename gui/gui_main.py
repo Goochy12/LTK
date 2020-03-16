@@ -1,7 +1,7 @@
 from tkinter import *
 from tkinter.ttk import *
 import variables
-from gui import input_output_gui
+from gui import travel_time_checker_gui
 
 
 class App:
@@ -27,7 +27,7 @@ class App:
 
         # iterate through the list of features to create a button for
         for i in range(len(variables.featureNames)):
-            feature = variables.featureNames[i]
+            feature = [i,variables.featureNames[i]]
             button = Button(frame, text=variables.featureNames[i],
                             command=lambda j=feature: self.createWindow(master, j))  # create the button
             button.pack(side=TOP)  # pack the button
@@ -49,7 +49,7 @@ class App:
         :return: None
         """
         fw = Toplevel()  # create the new window
-        fw.title(feature)  # set the title
+        fw.title(feature[1])  # set the title
 
         windowSize = [400, 400] # window size
         self.setWindowSize(fw, windowSize[0], windowSize[1]) # set the window size
@@ -63,9 +63,15 @@ class App:
         # self.addFeatureWindow(fw)
         # dictionary?
 
-        input_output_gui.InputOutputGui([fw,feature])   # create a standard input/output gui layout
+        self.loadGuiContent(fw,feature)
+
 
         return
+
+    def loadGuiContent(self,master,feature):
+        if feature[0] == 0:
+            travel_time_checker_gui.TravelTimeCheckerGui(master, feature)   # create a standard input/output gui layout
+
 
     def setWindowName(self, root, windowName):
         """

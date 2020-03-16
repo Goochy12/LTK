@@ -6,9 +6,9 @@ from features import travel_time_checker
 #   Add comments
 #   tidy up method
 
-class InputOutputGui:
-    def __init__(self, feature):
-        self.master = feature[0]
+class TravelTimeCheckerGui:
+    def __init__(self,master, feature):
+        self.master = master
         self.title = feature[1]
 
         self.inputFile = None
@@ -62,15 +62,10 @@ class InputOutputGui:
         self.setOutputFileLocation(outputLocation)
         return outputLocation
 
-    def calculate(self, feature):
+    def calculate(self):
         message = None
-        if feature == "Travel Time Checking":
-            c = travel_time_checker.TravelTimeChecker()
-            message = c.timeDistChecking(self.inputFile, self.outputFileName, self.outputFilelocation)
-
-        elif feature == "Geocoding":
-            return
-
+        c = travel_time_checker.TravelTimeChecker()
+        message = c.timeDistChecking(self.inputFile, self.outputFileName, self.outputFilelocation)
 
         if message[0] == "OK":
             # msg okay
