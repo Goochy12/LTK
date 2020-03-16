@@ -276,7 +276,7 @@ def run():
 
     app = gui_main.App(root, featureList)   # create the app
     root.mainloop() # mainloop
-    root.destroy()  # destroy
+    # root.destroy()  # destroy
 
     # m = Menu(root)
     # root.configure(menu=m)
