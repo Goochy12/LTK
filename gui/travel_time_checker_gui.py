@@ -67,7 +67,7 @@ class TravelTimeCheckerGui:
 
         outputFileNamelabel = Label(window, text="Output File Name:")  # output label
         outputFileNamelabel.grid(row=1, column=0)  # set the position
-        outputFileName = Entry(window)  # output file name input
+        outputFileName = Entry(window, state="disabled")  # output file name input
         outputFileName.grid(row=1, column=1)  # set the position
 
         outputLocationLabel = Label(window, text="Output Location")  # output location label
