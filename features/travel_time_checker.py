@@ -2,6 +2,7 @@ import big_maps_requests
 import requests_handler
 import file_handler
 
+
 # TODO:
 #   Add comments
 #   tidy up method
@@ -35,7 +36,6 @@ class TravelTimeChecker:
 
         return latLongList  # return the list of lats and longs
 
-
     def timeDistChecking(self, inputFile, outputFileName, outputFileLocation):
         """
         Method to get time and distance from an Origin point to a Destination point.
@@ -43,11 +43,13 @@ class TravelTimeChecker:
         :return: None
         """
 
-        self.fileHandler.setImportFilePath(inputFile)
-        # self.fileHandler.setOutputFileName(outputFileName)
+        # TODO: handle files
+
+        self.fileHandler.setImportFilePath(inputFile)  # set the input file
+        # self.fileHandler.setOutputFileName(outputFileName)    # set the output file name
         self.fileHandler.setOutputFileName("test")
-        self.fileHandler.setOutputFileDirectory(outputFileLocation)
-        self.fileHandler.createOutputFile()
+        self.fileHandler.setOutputFileDirectory(outputFileLocation)  # set the output file directory
+        self.fileHandler.createOutputFile()  # create the output file
 
         latLongList = self.parseTimeDistanceCheckingFile(inputFile)  # parse into array
 
@@ -64,6 +66,8 @@ class TravelTimeChecker:
                 eachCoord[1][1]) + " | " + str(travelDuration) + ", " + str(travelDistance)
             self.fileHandler.writeToFile(outputLine)  # write line to file
 
+
+        # TODO: set message
         message = "Routes Created Successfully!"  # create a success message
         # printMessage(message)  # print a success or fail message
         return

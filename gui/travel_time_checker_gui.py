@@ -4,7 +4,6 @@ from features import travel_time_checker
 
 
 # TODO:
-#   Add comments
 #   tidy up method
 
 class TravelTimeCheckerGui:
@@ -107,10 +106,11 @@ class TravelTimeCheckerGui:
         Method to run the calculate function of the feature
         :return: None
         """
+        # TODO: tidy
         c = travel_time_checker.TravelTimeChecker() # initialise the checker
         message = c.timeDistChecking(self.inputFile, self.outputFileName, self.outputFilelocation)  # run the feature
 
-        if message == "OK":
+        if message[0] == "OK":
             # msg okay
             return
         else:
