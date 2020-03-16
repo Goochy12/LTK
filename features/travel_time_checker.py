@@ -47,24 +47,25 @@ class TravelTimeChecker:
 
         self.fileHandler.setImportFilePath(inputFile)  # set the input file
         # self.fileHandler.setOutputFileName(outputFileName)    # set the output file name
-        self.fileHandler.setOutputFileName("test")
+        self.fileHandler.setOutputFileName("travelTimeOutput.txt")
         self.fileHandler.setOutputFileDirectory(outputFileLocation)  # set the output file directory
         self.fileHandler.createOutputFile()  # create the output file
 
         latLongList = self.parseTimeDistanceCheckingFile(inputFile)  # parse into array
 
         # match against maps
-        for eachCoord in latLongList:
-            routeRequest = big_maps_requests.makeRouteRequest(eachCoord)  # make the route request
-            routeJSON = requests_handler.returnRequestJSON(routeRequest)  # convert response to JSON (python dict)
+        if self.fileHandler.getErrorOccured() == False:
+            for eachCoord in latLongList:
+                routeRequest = big_maps_requests.makeRouteRequest(eachCoord)  # make the route request
+                routeJSON = requests_handler.returnRequestJSON(routeRequest)  # convert response to JSON (python dict)
 
-            travelDistance = routeJSON["resourceSets"][0]["resources"][0]["travelDistance"]  # get the distance
-            travelDuration = routeJSON["resourceSets"][0]["resources"][0]["travelDuration"]  # get the duration
+                travelDistance = routeJSON["resourceSets"][0]["resources"][0]["travelDistance"]  # get the distance
+                travelDuration = routeJSON["resourceSets"][0]["resources"][0]["travelDuration"]  # get the duration
 
-            # write to file - origin lat long -> dest lat long | time distance
-            outputLine = str(eachCoord[0][0]) + " " + str(eachCoord[0][1]) + " -> " + str(eachCoord[1][0]) + " " + str(
-                eachCoord[1][1]) + " | " + str(travelDuration) + ", " + str(travelDistance)
-            self.fileHandler.writeToFile(outputLine)  # write line to file
+                # write to file - origin lat long -> dest lat long | time distance
+                outputLine = str(eachCoord[0][0]) + " " + str(eachCoord[0][1]) + " -> " + str(eachCoord[1][0]) + " " + str(
+                    eachCoord[1][1]) + " | " + str(travelDuration) + ", " + str(travelDistance)
+                self.fileHandler.writeToFile(outputLine)  # write line to file
 
 
         # TODO: set message
