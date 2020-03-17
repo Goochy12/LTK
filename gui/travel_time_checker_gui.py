@@ -77,7 +77,7 @@ class TravelTimeCheckerGui:
         outputLocationButton.grid(row=2, column=1)  # set the position
 
         calculateButton = Button(window, text="Calculate",
-                                 command=lambda j=self.title: self.calculate(j))  # calculate button
+                                 command=self.calculate)  # calculate button
         calculateButton.grid(row=3)  # set the position
 
         return
