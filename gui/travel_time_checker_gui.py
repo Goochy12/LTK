@@ -61,24 +61,24 @@ class TravelTimeCheckerGui:
         """
 
         inputLabel = Label(window, text="Input File:")  # input label
-        inputLabel.grid(row=0, column=0)  # set the position
+        inputLabel.place(relx=0.2, rely=0.05, )  # set the position
         openInputFileButton = Button(window, text="Open File", command=self.getInputFile)  # input file button
-        openInputFileButton.grid(row=0, column=1)  # set the position
+        openInputFileButton.place(relx=0.5, rely=0.05)  # set the position
 
         outputFileNamelabel = Label(window, text="Output File Name:")  # output label
-        outputFileNamelabel.grid(row=1, column=0)  # set the position
+        outputFileNamelabel.place(relx=0.2, rely=0.15)  # set the position
         outputFileName = Entry(window, state="disabled")  # output file name input
-        outputFileName.grid(row=1, column=1)  # set the position
+        outputFileName.place(relx=0.5, rely=0.15)  # set the position
 
         outputLocationLabel = Label(window, text="Output Location")  # output location label
-        outputLocationLabel.grid(row=2, column=0)  # set the position
+        outputLocationLabel.place(relx=0.2, rely=0.25)  # set the position
         outputLocationButton = Button(window, text="Set Location",
                                       command=self.setOutputLocation)  # output location button
-        outputLocationButton.grid(row=2, column=1)  # set the position
+        outputLocationButton.place(relx=0.5, rely=0.25)  # set the position
 
         calculateButton = Button(window, text="Calculate",
                                  command=self.calculate)  # calculate button
-        calculateButton.grid(row=3)  # set the position
+        calculateButton.place(relx=0.4, rely=0.5)  # set the position
 
         return
 
