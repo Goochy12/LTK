@@ -1,5 +1,6 @@
 from tkinter import *
 from tkinter import filedialog
+from tkinter import messagebox
 from features import geocoding
 
 
@@ -135,8 +136,8 @@ class GeocodingGui:
 
         if message[0] == "OK":
             # msg okay
-            return
+            messagebox.showinfo(message[0], message[1])
         else:
             # something went wrong
-            return
+            messagebox.showerror(message[0], message[1])
         return

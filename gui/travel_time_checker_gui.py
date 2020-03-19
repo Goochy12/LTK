@@ -1,5 +1,6 @@
 from tkinter import *
 from tkinter import filedialog
+from tkinter import messagebox
 from features import travel_time_checker
 
 
@@ -138,12 +139,8 @@ class TravelTimeCheckerGui:
 
         if message[0] == "OK":
             # msg okay
-            w = Message(self.master, title=message[0], text=message[1])
-            w.pack()
-            return
+            messagebox.showinfo(message[0], message[1])
         else:
             # something went wrong
-            w = Message(self.master, title=message[0], text=message[1])
-            w.pack()
-            return
+            messagebox.showerror(message[0], message[1])
         return

@@ -34,8 +34,6 @@ class App:
             # button.place(anchor=CENTER)
             buttonWindowList.append(button)  # add the button to the list
 
-        self.featureWindows = {}
-
     def getFeatureWindows(self):
         return self.featureWindows
 
