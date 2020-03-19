@@ -81,7 +81,7 @@ class GeocodingGui:
 
         outputFileNamelabel = Label(window, text="Output File Name:")  # output label
         outputFileNamelabel.place(relx=0.2, rely=0.15)  # set the position
-        self.outputFileNameEntry = Entry(window, command=self.setOutputFileNameFromEntry)  # output file name input
+        self.outputFileNameEntry = Entry(window)  # output file name input
         self.outputFileNameEntry.place(relx=0.5, rely=0.15)  # set the position
 
         outputLocationLabel = Label(window, text="Output Location")  # output location label
@@ -131,6 +131,9 @@ class GeocodingGui:
         :return: None
         """
         # TODO: tidy
+
+        self.setOutputFileNameFromEntry()  # get the users output
+
         c = geocoding.Geocoding()  # initialise the checker
         message = c.geocoding(self.inputFile, self.outputFileName, self.outputFileLocation)  # run the feature
 
