@@ -25,7 +25,19 @@ class GeocodingGui:
         self.outputFileLocation = None  # set the output file location
         self.outputFileNameEntry = None
 
+        self.setWindowResizable(self.master, False)
+
         self.createLayout(self.master)  # create the layout
+
+    def setWindowResizable(self, root, resizable):
+        """
+        Method to set the window to resizable
+        :param root: Window root
+        :param resizable: True or False
+        :return: None
+        """
+        root.resizable(resizable, resizable)  # set resizable
+        return
 
     def setInputFile(self, f):
         """

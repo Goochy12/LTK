@@ -25,7 +25,20 @@ class TravelTimeCheckerGui:
         self.outputFilelocation = None  # set the output file location
         self.outputFileNameEntry = None
 
+        self.setWindowResizable(self.master, False)
+
         self.createLayout(self.master)  # create the layout
+
+
+    def setWindowResizable(self, root, resizable):
+        """
+        Method to set the window to resizable
+        :param root: Window root
+        :param resizable: True or False
+        :return: None
+        """
+        root.resizable(resizable, resizable)  # set resizable
+        return
 
     def setInputFile(self, f):
         """
@@ -68,7 +81,7 @@ class TravelTimeCheckerGui:
 
         outputFileNamelabel = Label(window, text="Output File Name:")  # output label
         outputFileNamelabel.place(relx=0.2, rely=0.15)  # set the position
-        self.outputFileNameEntry = Entry(window, command=self.setOutputFileNameFromEntry)  # output file name input
+        self.outputFileNameEntry = Entry(window)  # output file name input
         self.outputFileNameEntry.place(relx=0.5, rely=0.15)  # set the position
 
         outputLocationLabel = Label(window, text="Output Location")  # output location label
@@ -117,13 +130,20 @@ class TravelTimeCheckerGui:
         :return: None
         """
         # TODO: tidy
+
+        self.setOutputFileNameFromEntry()   # get the users output
+
         c = travel_time_checker.TravelTimeChecker() # initialise the checker
         message = c.timeDistChecking(self.inputFile, self.outputFileName, self.outputFilelocation)  # run the feature
 
         if message[0] == "OK":
             # msg okay
+            w = Message(self.master, title=message[0], text=message[1])
+            w.pack()
             return
         else:
             # something went wrong
+            w = Message(self.master, title=message[0], text=message[1])
+            w.pack()
             return
         return

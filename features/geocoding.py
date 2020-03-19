@@ -35,7 +35,8 @@ class Geocoding:
 
         self.fileHandler.setImportFilePath(inputFile)  # set the input file
         # self.fileHandler.setOutputFileName(outputFileName)    # set the output file name
-        self.fileHandler.setOutputFileName("geocodeOutput.txt")
+        if outputFileName == "":
+            self.fileHandler.setOutputFileName("geocodeOutput=")    # set the default file name
         self.fileHandler.setOutputFileDirectory(outputFileLocation)  # set the output file directory
         self.fileHandler.createOutputFile()  # create the output file
 
@@ -62,8 +63,10 @@ class Geocoding:
                              eachAddress[4] + " -> " + str(latitude) + " " + str(longitude)
 
                 self.fileHandler.writeToFile(outputLine)
+        else:
+            return ["Error", "There was an error."]
 
         message = "Geocodes successfully created!"  # create success message
         # printMessage(message)  # print a success or failure message
 
-        return
+        return ["OK", message]

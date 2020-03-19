@@ -47,7 +47,8 @@ class TravelTimeChecker:
 
         self.fileHandler.setImportFilePath(inputFile)  # set the input file
         # self.fileHandler.setOutputFileName(outputFileName)    # set the output file name
-        self.fileHandler.setOutputFileName("travelTimeOutput.txt")
+        if outputFileName == "":
+            self.fileHandler.setOutputFileName("geocodeOutput=")  # set the default file name
         self.fileHandler.setOutputFileDirectory(outputFileLocation)  # set the output file directory
         self.fileHandler.createOutputFile()  # create the output file
 
@@ -66,9 +67,11 @@ class TravelTimeChecker:
                 outputLine = str(eachCoord[0][0]) + " " + str(eachCoord[0][1]) + " -> " + str(eachCoord[1][0]) + " " + str(
                     eachCoord[1][1]) + " | " + str(travelDuration) + ", " + str(travelDistance)
                 self.fileHandler.writeToFile(outputLine)  # write line to file
+        else:
+            return ["Error", "There has been an error."]
 
 
         # TODO: set message
         message = "Routes Created Successfully!"  # create a success message
         # printMessage(message)  # print a success or fail message
-        return
+        return ["OK", message]
