@@ -23,6 +23,7 @@ class TravelTimeCheckerGui:
         self.inputFile = None  # set the input file
         self.outputFileName = None  # set the output file name
         self.outputFilelocation = None  # set the output file location
+        self.outputFileNameEntry = None
 
         self.createLayout(self.master)  # create the layout
 
@@ -67,8 +68,8 @@ class TravelTimeCheckerGui:
 
         outputFileNamelabel = Label(window, text="Output File Name:")  # output label
         outputFileNamelabel.place(relx=0.2, rely=0.15)  # set the position
-        outputFileName = Entry(window, state="disabled")  # output file name input
-        outputFileName.place(relx=0.5, rely=0.15)  # set the position
+        self.outputFileNameEntry = Entry(window, command=self.setOutputFileNameFromEntry)  # output file name input
+        self.outputFileNameEntry.place(relx=0.5, rely=0.15)  # set the position
 
         outputLocationLabel = Label(window, text="Output Location")  # output location label
         outputLocationLabel.place(relx=0.2, rely=0.25)  # set the position
@@ -100,6 +101,15 @@ class TravelTimeCheckerGui:
         outputLocation = filedialog.askdirectory(initialdir="/")    # open file locator dialog
         self.setOutputFileLocation(outputLocation)  # set the output file location variable
         return outputLocation   # return the output file location
+
+    def setOutputFileNameFromEntry(self):
+        """
+        Method to set the user defined output file name
+        :return: the users output file name
+        """
+        outputFileName = self.outputFileNameEntry.get()  # get the entry input
+        self.setOutputFileName(outputFileName)  # set the variable
+        return outputFileName  # return the file name
 
     def calculate(self):
         """

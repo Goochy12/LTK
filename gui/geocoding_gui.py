@@ -22,7 +22,8 @@ class GeocodingGui:
 
         self.inputFile = None  # set the input file
         self.outputFileName = None  # set the output file name
-        self.outputFilelocation = None  # set the output file location
+        self.outputFileLocation = None  # set the output file location
+        self.outputFileNameEntry = None
 
         self.createLayout(self.master)  # create the layout
 
@@ -50,7 +51,7 @@ class GeocodingGui:
         :param l: location for the output file
         :return: None
         """
-        self.outputFilelocation = l  # set the output file location
+        self.outputFileLocation = l  # set the output file location
         return
 
     def createLayout(self, window):
@@ -67,8 +68,8 @@ class GeocodingGui:
 
         outputFileNamelabel = Label(window, text="Output File Name:")  # output label
         outputFileNamelabel.place(relx=0.2, rely=0.15)  # set the position
-        outputFileName = Entry(window, state="disabled")  # output file name input
-        outputFileName.place(relx=0.5, rely=0.15)  # set the position
+        self.outputFileNameEntry = Entry(window, command=self.setOutputFileNameFromEntry)  # output file name input
+        self.outputFileNameEntry.place(relx=0.5, rely=0.15)  # set the position
 
         outputLocationLabel = Label(window, text="Output Location")  # output location label
         outputLocationLabel.place(relx=0.2, rely=0.25)  # set the position
@@ -88,18 +89,28 @@ class GeocodingGui:
         :return: the input file location
         """
         inputFile = filedialog.askopenfilename(initialdir="/", title="Open Input File",
-                                               filetypes=((".txt files", "*.txt"), ("All Files", "*.*")))   # open the file dialog
-        self.setInputFile(inputFile)    # set the input file variable
-        return inputFile    # return the input file path
+                                               filetypes=(
+                                               (".txt files", "*.txt"), ("All Files", "*.*")))  # open the file dialog
+        self.setInputFile(inputFile)  # set the input file variable
+        return inputFile  # return the input file path
 
     def setOutputLocation(self):
         """
         Method to set the output file location
         :return: the output file location
         """
-        outputLocation = filedialog.askdirectory(initialdir="/")    # open file locator dialog
+        outputLocation = filedialog.askdirectory(initialdir="/")  # open file locator dialog
         self.setOutputFileLocation(outputLocation)  # set the output file location variable
-        return outputLocation   # return the output file location
+        return outputLocation  # return the output file location
+
+    def setOutputFileNameFromEntry(self):
+        """
+        Method to set the user defined output file name
+        :return: the users output file name
+        """
+        outputFileName = self.outputFileNameEntry.get()  # get the entry input
+        self.setOutputFileName(outputFileName)  # set the variable
+        return outputFileName  # return the file name
 
     def calculate(self):
         """
@@ -107,8 +118,8 @@ class GeocodingGui:
         :return: None
         """
         # TODO: tidy
-        c = geocoding.Geocoding() # initialise the checker
-        message = c.geocoding(self.inputFile, self.outputFileName, self.outputFilelocation)  # run the feature
+        c = geocoding.Geocoding()  # initialise the checker
+        message = c.geocoding(self.inputFile, self.outputFileName, self.outputFileLocation)  # run the feature
 
         if message[0] == "OK":
             # msg okay
