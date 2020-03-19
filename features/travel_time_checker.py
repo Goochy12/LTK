@@ -48,7 +48,9 @@ class TravelTimeChecker:
         self.fileHandler.setImportFilePath(inputFile)  # set the input file
         # self.fileHandler.setOutputFileName(outputFileName)    # set the output file name
         if outputFileName == "":
-            self.fileHandler.setOutputFileName("geocodeOutput=")  # set the default file name
+            self.fileHandler.setOutputFileName("travelTimeOutput")  # set the default file name
+        else:
+            self.fileHandler.setOutputFileName(outputFileName)
         self.fileHandler.setOutputFileDirectory(outputFileLocation)  # set the output file directory
         self.fileHandler.createOutputFile()  # create the output file
 

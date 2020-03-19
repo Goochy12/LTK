@@ -5,7 +5,7 @@ import os
 
 class FileHandler:
     def __init__(self):
-        self.outputFileName = "output.txt"
+        self.outputFileName = "output"
         self.importFilePath = "input.txt"
         self.outputFilePath = ""
         self.outputFileDirectory = ""
